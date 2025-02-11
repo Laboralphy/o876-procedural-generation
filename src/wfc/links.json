@@ -1,0 +1,13 @@
+{
+  "LINK_CELL": [0, 0, 0],
+  "LINK_UP": [0, 0, 1],
+  "LINK_DOWN": [0, 0, -1],
+  "LINK_NORTH": [0, -1, 0],
+  "LINK_SOUTH": [0, 1, 0],
+  "LINK_EAST": [1, 0, 0],
+  "LINK_WEST": [-1, 0, 0],
+  "LINK_NORTH_WEST": [-1, -1, 0],
+  "LINK_NORTH_EAST": [1, -1, 0],
+  "LINK_SOUTH_WEST": [-1, 1, 0],
+  "LINK_SOUTH_EAST": [1, 1, 0]
+}
