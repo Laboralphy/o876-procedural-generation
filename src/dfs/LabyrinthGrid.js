@@ -3,10 +3,17 @@ const DIRECTIONS = require('./data/directions.json')
 const Room = require('./Room')
 const Screen = require('./Screen')
 
-class LabyrinthGenerator {
+class LabyrinthGrid {
+    /**
+     *
+     * @param width {number}
+     * @param height {number}
+     */
     constructor(width, height) {
-        this.difficulty = 1
-        this.diagonalProbability = 0.4
+        this.parameters = {
+            difficulty: 1,
+            diagonalProbability: 0.4
+        }
         this.width = width;
         this.height = height;
         this._grid = Array(height)
@@ -19,35 +26,14 @@ class LabyrinthGenerator {
     }
 
     generate(startX = 0, startY = 0) {
-        this.carve(startX, startY)
-        this.simplifyXCorridors()
-        return this._grid
     }
 
-    carve(x, y) {
-        let directions = this
-            .directions
-            .slice()
-            .sort(() => Math.random() - 0.5)
-
-        this._grid[y][x].carved = true
-
-        for (let [dx, dy] of directions) {
-            let nx = x + dx, ny = y + dy
-
-            // Réduction des diagonales (ex: 40% de chance d'être creusées)
-            if (this.isDiagonal(dx, dy) && Math.random() > this.diagonalProbability) {
-                continue
-            }
-
-            if (this.isValid(nx, ny)) {
-                this._grid[y][x].open(dx, dy)
-                this._grid[ny][nx].open(-dx, -dy)
-                this.carve(nx, ny)
-            }
-        }
-    }
-
+    /**
+     * Open a corridor in the specified room and in the corresponding destination room
+     * @param x {number} room x coord
+     * @param y {number} room y coord
+     * @param sDirection {string} direction name
+     */
     openCorridor(x, y, sDirection) {
         const [dx, dy] = DIRECTIONS[sDirection]
         const nx = x + dx, ny = y + dy
@@ -57,6 +43,12 @@ class LabyrinthGenerator {
         }
     }
 
+    /**
+     * Close a corridor in the specified room and in the corresponding destination room
+     * @param x {number} room x coord
+     * @param y {number} room y coord
+     * @param sDirection {string} direction name
+     */
     closeCorridor(x, y, sDirection) {
         const [dx, dy] = DIRECTIONS[sDirection]
         const nx = x + dx, ny = y + dy
@@ -66,31 +58,42 @@ class LabyrinthGenerator {
         }
     }
 
+    /**
+     * Checks if two corridors are crossing each other.
+     * O O
+     *  X   <-- prevents this corridor pattern
+     * O O
+     *
+     * @param x {number} room x coord
+     * @param y {number} room y coord
+     * @returns {boolean}
+     */
     checkXCorridors (x, y) {
         return this._grid[y][x].exits.se && this._grid[y + 1][x + 1].exits.nw &&
             this._grid[y + 1][x].exits.ne && this._grid[y][x + 1].exits.sw
     }
 
-    simplifyXCorridors () {
-        for (let y = 0; y < this.height - 1; ++y) {
-            for (let x = 0; x < this.width - 1; ++x) {
-                if (this.checkXCorridors(x, y)) {
-                    this.closeCorridor(x, y, 'se')
-                    this.closeCorridor(x + 1, y, 'sw')
+    /**
+     * Replace X corridor by a square pattern
+     */
+    corridorPostProcessing () {
+        this.forEachRoom(({ x, y }) => {
+            if (this.checkXCorridors(x, y)) {
+                this.closeCorridor(x, y, 'se')
+                this.closeCorridor(x + 1, y, 'sw')
+                this.openCorridor(x, y, 'e')
+                this.openCorridor(x, y, 's')
+                this.openCorridor(x + 1, y + 1, 'e')
+                this.openCorridor(x + 1, y + 1, 'n')
+            } else {
+                if (Math.random() < (1 - this.parameters.difficulty)) {
                     this.openCorridor(x, y, 'e')
+                }
+                if (Math.random() < (1 - this.parameters.difficulty)) {
                     this.openCorridor(x, y, 's')
-                    this.openCorridor(x + 1, y + 1, 'e')
-                    this.openCorridor(x + 1, y + 1, 'n')
-                } else {
-                    if (Math.random() < (1 - this.difficulty)) {
-                        this.openCorridor(x, y, 'e')
-                    }
-                    if (Math.random() < (1 - this.difficulty)) {
-                        this.openCorridor(x, y, 's')
-                    }
                 }
             }
-        }
+        })
     }
 
     isDiagonal(dx, dy) {
@@ -105,15 +108,19 @@ class LabyrinthGenerator {
         return this.isInsideGrid(x, y) && this._grid[y][x].carved === false;
     }
 
-    display() {
-        const screen = new Screen(this.width * 2 , this.height * 2)
+    forEachRoom (f) {
         for (let y = 0; y < this.height; ++y) {
             for (let x = 0; x < this.width; ++x) {
-                this._grid[y][x].render(screen)
+                f(this._grid[y][x])
             }
         }
+    }
+
+    display() {
+        const screen = new Screen(this.width * 2 , this.height * 2)
+        this.forEachRoom(r => r.render(screen))
         console.log(screen.render());
     }
 }
 
-module.exports = LabyrinthGenerator
+module.exports = LabyrinthGrid
