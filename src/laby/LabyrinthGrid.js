@@ -8,11 +8,16 @@ class LabyrinthGrid {
      *
      * @param width {number}
      * @param height {number}
+     * @param difficulty {number}
+     * @param diagonalProbability {number}
      */
-    constructor(width, height) {
+    constructor(width, height, {
+        difficulty = 1,
+        diagonalProbability = 0.4
+    } = {}) {
         this.parameters = {
-            difficulty: 1,
-            diagonalProbability: 0.4
+            diagonalProbability,
+            difficulty
         }
         this.width = width;
         this.height = height;
@@ -117,7 +122,7 @@ class LabyrinthGrid {
     }
 
     display() {
-        const screen = new Screen(this.width * 2 , this.height * 2)
+        const screen = new Screen(this.width * 4 , this.height * 2)
         this.forEachRoom(r => r.render(screen))
         console.log(screen.render());
     }

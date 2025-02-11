@@ -1,8 +1,8 @@
-const LabyrinthGrid = require('./LabyrinthGrid')
+const LabyrinthGrid = require('../laby/LabyrinthGrid')
 
 class DFSGenerator extends LabyrinthGrid {
-    constructor(width, height) {
-        super (width, height)
+    constructor(width, height, parameters) {
+        super (width, height, parameters)
     }
 
     generate(startX = 0, startY = 0) {
@@ -18,11 +18,13 @@ class DFSGenerator extends LabyrinthGrid {
 
         this._grid[y][x].carve()
 
+        const diagProb = this.parameters.diagonalProbability
+
         for (let [dx, dy] of directions) {
             let nx = x + dx, ny = y + dy
 
             // Réduction des diagonales (ex: 40% de chance d'être creusées)
-            if (this.isDiagonal(dx, dy) && Math.random() > this.parameters.diagonalProbability) {
+            if (this.isDiagonal(dx, dy) && Math.random() > diagProb) {
                 continue
             }
 
