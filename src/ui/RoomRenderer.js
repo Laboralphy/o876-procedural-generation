@@ -1,4 +1,16 @@
 export class RoomRenderer {
+    renderCorridor (canvas, x, y, xTo, yTo) {
+        const ctx = canvas.getContext('2d')
+        ctx.fillStyle = '#2f0'
+        ctx.strokeStyle = '#2f0'
+        ctx.lineWidth = 1
+        ctx.fillRect(x - 1, y - 1, 3, 3)
+        ctx.beginPath()
+        ctx.moveTo(x + 0.5, y + 0.5)
+        ctx.lineTo(xTo + 0.5, yTo + 0.5)
+        ctx.stroke()
+        ctx.closePath()
+    }
     /**
      *
      * @param room {Room}
@@ -21,74 +33,34 @@ export class RoomRenderer {
         const pDown = h - rystart - 1
         const pLeft = rxstart - 1
         const pRight = w - rystart - 1
-        const pw2 = w / 2 - 1
-        const ph2 = h / 2 - 1
+        const pw2 = w / 2
+        const ph2 = h / 2
         ctx.fillStyle = '#2f0'
         ctx.strokeStyle = '#2f0'
         ctx.lineWidth = 1
         if (room.exits.n) {
-            ctx.fillRect(pw2, pUp, 3, 3)
-            ctx.beginPath()
-            ctx.moveTo(pw2 + 1, pUp + 1)
-            ctx.lineTo(pw2, 0)
-            ctx.stroke()
-            ctx.closePath()
+            this.renderCorridor(canvas, pw2, pUp, pw2, 0)
         }
         if (room.exits.s) {
-            ctx.fillRect(pw2, pDown, 3, 3)
-            ctx.beginPath()
-            ctx.moveTo(pw2, pDown)
-            ctx.lineTo(pw2, h - 1)
-            ctx.stroke()
-            ctx.closePath()
+            this.renderCorridor(canvas, pw2, pDown, pw2, h - 1)
         }
         if (room.exits.e) {
-            ctx.fillRect(pRight, ph2, 3, 3)
-            ctx.beginPath()
-            ctx.moveTo(pRight, ph2)
-            ctx.lineTo(w - 1, ph2)
-            ctx.stroke()
-            ctx.closePath()
+            this.renderCorridor(canvas, pRight, ph2, w - 1, ph2)
         }
         if (room.exits.w) {
-            ctx.fillRect(pLeft, ph2, 3, 3)
-            ctx.beginPath()
-            ctx.moveTo(pLeft, ph2)
-            ctx.lineTo(0, ph2)
-            ctx.stroke()
-            ctx.closePath()
+            this.renderCorridor(canvas, pLeft, ph2, 0, ph2)
         }
         if (room.exits.nw) {
-            ctx.fillRect(pLeft, pUp, 3, 3)
-            ctx.beginPath()
-            ctx.moveTo(pLeft, pUp)
-            ctx.lineTo(0, 0)
-            ctx.stroke()
-            ctx.closePath()
+            this.renderCorridor(canvas, pLeft, pUp, 0, 0)
         }
         if (room.exits.ne) {
-            ctx.fillRect(pRight, pUp, 3, 3)
-            ctx.beginPath()
-            ctx.moveTo(pRight, pUp)
-            ctx.lineTo(w - 1, 0)
-            ctx.stroke()
-            ctx.closePath()
+            this.renderCorridor(canvas, pRight, pUp, w - 1, 0)
         }
         if (room.exits.sw) {
-            ctx.fillRect(pLeft, pDown, 3, 3)
-            ctx.beginPath()
-            ctx.moveTo(pLeft, pDown)
-            ctx.lineTo(0, h - 1)
-            ctx.stroke()
-            ctx.closePath()
+            this.renderCorridor(canvas, pLeft, pDown, 0, h - 1)
         }
         if (room.exits.se) {
-            ctx.fillRect(pRight, pDown, 3, 3)
-            ctx.beginPath()
-            ctx.moveTo(pRight, pDown)
-            ctx.lineTo(w - 1, h - 1)
-            ctx.stroke()
-            ctx.closePath()
+            this.renderCorridor(canvas, pRight, pDown, w - 1, h - 1)
         }
     }
 }

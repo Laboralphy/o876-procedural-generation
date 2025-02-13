@@ -8,8 +8,40 @@
 </head>
 <body>
     <h1>Title</h1>
-    <div class="grid-container">
-        <canvas width="512" height="512"></canvas>
-    </div>
+    <table>
+        <tr>
+            <th>Parameters</th>
+            <th>Labyrinth</th>
+        </tr>
+        <tr>
+            <td class="generator-parameters">
+                <form>
+                    <fieldset>
+                        <legend>Size</legend>
+                        <label>Width: <input name="width" type="number" min="2" max="99" value="5"/></label><br />
+                        <label>Height: <input name="height" type="number" min="2" max="99" value="5"/></label><br />
+                    </fieldset>
+                    <fieldset>
+                        <legend>Difficulty</legend>
+                        <label>Chaos: <input name="difficulty" type="number" min="0" max="100" step="10" value="50"/>%</label><br />
+                        <label>Diag. prob.: <input name="diag-prob" type="number" min="0" max="100" step="10" value="50"/>%</label><br />
+                    </fieldset>
+                    <fieldset>
+                        <legend>Layout</legend>
+                        <ul>
+                            <li><label><input type="radio" name="pattern" value="square" />Square</label></li>
+                            <li><label><input type="radio" name="pattern" value="circle" />Circle</label></li>
+                            <li><label><input type="radio" name="pattern" value="cross" />Cross</label></li>
+                            <li><label><input type="radio" name="pattern" value="rempart" />Rempart</label></li>
+                        </ul>
+                    </fieldset>
+                    <button class="generate">Generate</button>
+                </form>
+            </td>
+            <td class="grid-container">
+                <canvas width="512" height="512"></canvas>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

@@ -3,11 +3,19 @@ body {
     background: #080808;
 }
 
-div.grid-container{
+.grid-container{
     border-spacing: 0;
     border-collapse: collapse;
 }
 
-div.grid-container canvas {
+.grid-container canvas {
     display: block;
+}
+
+.generator-parameters {
+    vertical-align: top;
+}
+
+form ul > li {
+    list-style: none;
 }
