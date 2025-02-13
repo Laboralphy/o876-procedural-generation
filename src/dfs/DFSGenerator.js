@@ -7,7 +7,9 @@ export class DFSGenerator extends LabyrinthGrid {
 
     generate(startX = 0, startY = 0) {
         this.carve(startX, startY)
-        this.corridorPostProcessing()
+        this.preventCrossingCorridors()
+        this.applyDifficulty()
+        this.computeDistance(this.getCell(startX, startY))
     }
 
     carve(x, y) {
@@ -28,9 +30,8 @@ export class DFSGenerator extends LabyrinthGrid {
                 continue
             }
 
-            if (this.isValid(nx, ny)) {
-                this._grid[y][x].open(dx, dy)
-                this._grid[ny][nx].open(-dx, -dy)
+            if (this.isCarvable(nx, ny)) {
+                this.openCorridor(x, y, dx, dy)
                 this.carve(nx, ny)
             }
         }

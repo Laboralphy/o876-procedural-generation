@@ -10,7 +10,62 @@ export class Room {
         this._x = x
         this._y = y
         this._carved = false
+        this._sealed = false // if true : cannot be modified
+        this._index = -1
+        this._distance = -1
         this._exits = Object.fromEntries(Object.keys(DIRECTIONS).map(d => [d, false]))
+    }
+
+    /**
+     * Distance of room to entrance
+     * @returns {number}
+     */
+    get distance() {
+        return this._distance;
+    }
+
+    /**
+     * Distance of room to entrance
+     * @param value
+     */
+    set distance(value) {
+        this._distance = value;
+    }
+
+    /**
+     * index of room
+     * @returns {number}
+     */
+    get index() {
+        return this._index;
+    }
+
+    get deadEnd () {
+        return Object.values(this._exits).filter(x => x).length === 1
+    }
+
+    /**
+     * index of room
+     * @param value
+     */
+    set index(value) {
+        this._index = value;
+    }
+
+    /**
+     * If true : room carved and exits cannot be modified
+     * @returns {boolean}
+     */
+    get sealed() {
+        return this._sealed;
+    }
+
+    /**
+     * Define a "readonly" flag for exits and carve
+     * @param value
+     */
+    set sealed(value) {
+        this._sealed = value;
     }
 
     /**

@@ -14,16 +14,26 @@ function generate({
         difficulty,
         diagonalProbability,
     });
-    lab.generate(0, 0);
+
+    lab.generate(1, 0);
+
+    let nMaxDistance = 0
+    lab.forEachRoom(room => {
+        nMaxDistance = Math.max(nMaxDistance, room.distance)
+    })
 
     const rr = new RoomRenderer()
+    rr.maxDistance = nMaxDistance
 
     generateCanvasGrid(
         document.querySelector('.grid-container > canvas'),
         lab.width, lab.height,
         32, 32,
         (canvas, x, y) => {
-            rr.render(lab.getCell(x, y), canvas)
+            const room = lab.getCell(x, y)
+            if (room !== null) {
+                rr.render(lab.getCell(x, y), canvas)
+            }
         }
     )
 }
@@ -31,9 +41,10 @@ function generate({
 export function generateFromParams () {
     const width = parseInt(document.querySelector('.generator-parameters input[name="width"]')?.value || 2)
     const height = parseInt(document.querySelector('.generator-parameters input[name="height"]')?.value || 2)
-    const difficulty = parseInt(document.querySelector('.generator-parameters input[name="difficulty"]')?.value || 0.5)
-    const diagonalProbability = parseInt(document.querySelector('.generator-parameters input[name="diag-prob"]')?.value || 0.5)
-    generate({difficulty, diagonalProbability, width, height})
+    const difficulty = parseInt(document.querySelector('.generator-parameters input[name="difficulty"]')?.value || '50') / 100
+    const diagonalProbability = parseInt(document.querySelector('.generator-parameters input[name="diag-prob"]')?.value || '50') / 100
+    const pattern = parseInt(document.querySelector('.generator-parameters input[name="pattern"]')?.value || '')
+    generate({difficulty, diagonalProbability, width, height, pattern})
 }
 
 function main () {
