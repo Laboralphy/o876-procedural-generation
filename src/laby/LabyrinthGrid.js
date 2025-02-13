@@ -1,9 +1,9 @@
-const DIRECTIONS = require('./data/directions.json')
+import DIRECTIONS from './data/directions.json' with { type: 'json' }
 
-const Room = require('./Room')
-const Screen = require('./Screen')
+import { Room } from './Room.js'
+import { Screen } from './Screen.js'
 
-class LabyrinthGrid {
+export class LabyrinthGrid {
     /**
      *
      * @param width {number}
@@ -121,11 +121,13 @@ class LabyrinthGrid {
         }
     }
 
+    getCell (x, y) {
+        return this._grid[y][x]
+    }
+
     display() {
         const screen = new Screen(this.width * 4 , this.height * 2)
         this.forEachRoom(r => r.render(screen))
         console.log(screen.render());
     }
 }
-
-module.exports = LabyrinthGrid

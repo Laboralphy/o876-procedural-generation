@@ -1,7 +1,7 @@
-const DIRECTIONS = require('./data/directions.json')
-const DECORATIONS = require('./data/decorations.json')
+import DIRECTIONS from './data/directions.json' with { type: 'json' }
+import DECORATIONS from './data/decorations.json' with { type: 'json' }
 
-class Room {
+export class Room {
     /**
      * @param x {number} x coord of room
      * @param y {number} y coord of room
@@ -145,5 +145,3 @@ class Room {
             })
     }
 }
-
-module.exports = Room

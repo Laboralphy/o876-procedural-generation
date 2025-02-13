@@ -1,0 +1,13 @@
+body {
+    color: #ddd;
+    background: #080808;
+}
+
+div.grid-container{
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+div.grid-container canvas {
+    display: block;
+}

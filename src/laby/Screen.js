@@ -1,4 +1,4 @@
-class Screen {
+export class Screen {
     constructor (width, height) {
         this._chars = null
         this.setSize(width, height)
@@ -24,5 +24,3 @@ class Screen {
         return this._chars.map(row => row.join('')).join('\n')
     }
 }
-
-module.exports = Screen

@@ -1,6 +1,6 @@
-const LabyrinthGrid = require('../laby/LabyrinthGrid')
+import { LabyrinthGrid } from '../laby/LabyrinthGrid.js'
 
-class DFSGenerator extends LabyrinthGrid {
+export class DFSGenerator extends LabyrinthGrid {
     constructor(width, height, parameters) {
         super (width, height, parameters)
     }
@@ -36,5 +36,3 @@ class DFSGenerator extends LabyrinthGrid {
         }
     }
 }
-
-module.exports = DFSGenerator

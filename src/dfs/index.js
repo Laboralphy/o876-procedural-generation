@@ -1,13 +1,10 @@
-const DFS = require('./DFSGenerator')
+import { DFSGenerator } from './DFSGenerator.js'
 
-function testDFS () {
-    let lab = new DFS(30, 15, {
+export function testDFS () {
+    let lab = new DFSGenerator(9, 5, {
         difficulty: 0.5,
         diagonalProbability: 0.4,
     });
     lab.generate(4, 4);
-    lab.display();
+    return lab
 }
-
-testDFS()
-
